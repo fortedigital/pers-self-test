@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Er personalledelse riktig for deg?</title>
+<meta name="description" content="En kort, ærlig selvtest for konsulenter som vurderer å gå inn i en rolle med personalansvar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f4f1ea;
+    --paper: #fbf9f4;
+    --ink: #1a1815;
+    --ink-soft: #4a463e;
+    --ink-mute: #8a857a;
+    --rule: #d6d0c2;
+    --rule-soft: #e8e3d6;
+    --accent: #8b2e1f;
+    --accent-soft: #c4452f;
+    --good: #2d5a3d;
+    --warn: #9a6b1a;
+    --bad: #7a2418;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(139, 46, 31, 0.04) 0%, transparent 40%),
+      radial-gradient(circle at 80% 90%, rgba(45, 90, 61, 0.04) 0%, transparent 40%);
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem 6rem;
+  }
+  header {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 2.5rem;
+    margin-bottom: 3rem;
+  }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+  h1 {
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 400;
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.25rem;
+    color: var(--ink);
+  }
+  h1 em {
+    font-style: italic;
+    font-variation-settings: "opsz" 144;
+    color: var(--accent);
+  }
+  .lede {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.15rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    font-weight: 300;
+    max-width: 56ch;
+  }
+  .meta {
+    margin-top: 1.75rem;
+    font-size: 13px;
+    color: var(--ink-mute);
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .meta span { display: inline-flex; align-items: center; gap: 6px; }
+  .meta svg { width: 14px; height: 14px; stroke-width: 1.5; }
+
+  .progress {
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    padding: 1rem 0 0.75rem;
+    margin: 0 -1.5rem 2.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    z-index: 10;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+  .progress-track {
+    height: 2px;
+    background: var(--rule-soft);
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-bar {
+    position: absolute;
+    inset: 0 100% 0 0;
+    background: var(--accent);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .question {
+    margin-bottom: 2.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .question:last-of-type { border-bottom: none; }
+  .q-num {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    display: block;
+    letter-spacing: 0.02em;
+  }
+  .q-text {
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 400;
+    line-height: 1.4;
+    margin-bottom: 1.5rem;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .scale {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+  }
+  .scale-btn {
+    appearance: none;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 14px 8px;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink-soft);
+    transition: all 0.18s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    border-radius: 2px;
+  }
+  .scale-btn:hover {
+    border-color: var(--ink-mute);
+    background: #fff;
+    transform: translateY(-1px);
+  }
+  .scale-btn.selected {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .scale-btn-num {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+  .scale-btn-label {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .btn-primary {
+    appearance: none;
+    background: var(--accent);
+    color: var(--paper);
+    border: none;
+    padding: 14px 28px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--ink);
+  }
+  .btn-primary:disabled {
+    background: var(--rule);
+    color: var(--ink-mute);
+    cursor: not-allowed;
+  }
+  .btn-text {
+    appearance: none;
+    background: none;
+    border: none;
+    color: var(--ink-mute);
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+  .btn-text:hover { color: var(--accent); }
+
+  .result {
+    margin-top: 4rem;
+    opacity: 0;
+    animation: fadeIn 0.6s ease forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .result-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 3rem 2.5rem;
+    position: relative;
+    border-radius: 2px;
+  }
+  .result-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--band-color, var(--accent));
+  }
+  .result-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--band-color, var(--accent));
+    margin-bottom: 1rem;
+  }
+  .result-band {
+    font-family: 'Fraunces', serif;
+    font-size: 2.25rem;
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .result-score {
+    font-size: 13px;
+    color: var(--ink-mute);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 2rem;
+  }
+  .result-score strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .result-headline {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    color: var(--band-color, var(--accent));
+    margin-bottom: 1.25rem;
+    font-weight: 400;
+  }
+  .result-body {
+    color: var(--ink-soft);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .result-body p + p { margin-top: 1rem; }
+
+  .breakdown {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+  }
+  .breakdown-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 1.25rem;
+  }
+  .breakdown-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 8px 0;
+    font-size: 14px;
+    border-bottom: 1px dotted var(--rule-soft);
+  }
+  .breakdown-row:last-child { border-bottom: none; }
+  .breakdown-label { color: var(--ink-soft); }
+  .breakdown-score {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-variant-numeric: tabular-nums;
+  }
+  .breakdown-dots {
+    display: flex;
+    gap: 3px;
+  }
+  .breakdown-dots span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--rule);
+  }
+  .breakdown-dots span.filled {
+    background: var(--band-color, var(--accent));
+  }
+  .breakdown-num {
+    font-family: 'Fraunces', serif;
+    font-weight: 500;
+    min-width: 14px;
+    text-align: right;
+    color: var(--ink);
+  }
+
+  .tags {
+    margin-top: 2rem;
+    display: grid;
+    gap: 1rem;
+  }
+  .tag-group {
+    font-size: 13px;
+  }
+  .tag-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .tag-list { color: var(--ink-soft); line-height: 1.5; }
+
+  footer {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: var(--ink-mute);
+    line-height: 1.6;
+  }
+  footer em {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 2.5rem 1.25rem 4rem; }
+    .scale-btn-label { font-size: 9px; }
+    .scale-btn { padding: 12px 4px; }
+    .result-card { padding: 2rem 1.5rem; }
+    .actions { flex-direction: column; align-items: stretch; }
+    .actions .btn-text { text-align: center; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Selvrefleksjon · for konsulenter</div>
+    <h1>Er <em>personalledelse</em> riktig vei for deg?</h1>
+    <p class="lede">Åtte spørsmål om hva du faktisk får energi av — og hva en lederrolle i et konsulentselskap egentlig består av. Svar ærlig. Resultatet er bare så nyttig som svarene dine.</p>
+    <div class="meta">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 3–5 minutter</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 5c0-1.66 4-3 9-3s9 1.34 9 3"/></svg> Ingen data lagres</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Anonym</span>
+    </div>
+  </header>
+
+  <div class="progress" aria-hidden="true">
+    <div class="progress-meta">
+      <span><span id="answered-count">0</span> av 8 besvart</span>
+      <span id="progress-pct">0 %</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+  </div>
+
+  <main id="questions" aria-label="Spørreundersøkelse"></main>
+
+  <div class="actions">
+    <button id="submit-btn" class="btn-primary" disabled>Se resultatet</button>
+    <button id="reset-btn" class="btn-text">Nullstill svar</button>
+  </div>
+
+  <section id="result" aria-live="polite"></section>
+
+  <footer>
+    <p>Denne testen er et utgangspunkt for refleksjon, ikke en fasit. Det finnes mange dyktige fagfolk som ville fått lav score her — og det betyr ikke at de er dårlige ledere, men kanskje at en seniorfaglig vei eller en lederrolle <em>uten</em> personalansvar (teknisk leder, fagleder, principal) passer bedre. Snakk med din egen leder eller en mentor før du tar valget.</p>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  const questions = [
+    { id: 'q1', text: 'Jeg får ekte energi av å hjelpe andre å vokse, også når arbeidet deres ikke direkte er mitt.', dim: 'utvikle' },
+    { id: 'q2', text: 'Jeg vil heller se teamet lykkes med et prosjekt enn å være den hvis kode eller design bar det.', dim: 'ego' },
+    { id: 'q3', text: 'Jeg er komfortabel med vanskelige samtaler — prestasjonsproblemer, konflikter, å si nei til en kunde.', dim: 'vanskelige' },
+    { id: 'q4', text: 'Jeg klarer å være tålmodig og støttende når noen gjør samme feil flere ganger.', dim: 'taalmodighet' },
+    { id: 'q5', text: 'Jeg aksepterer at jobben blir mindre praktisk-teknisk og mer møter, 1:1-er, rekruttering og administrasjon.', dim: 'virkelighet' },
+    { id: 'q6', text: 'Jeg legger aktivt merke til hvordan folk har det — ikke bare hva de leverer.', dim: 'empati' },
+    { id: 'q7', text: 'Jeg kan ta en beslutning med ufullstendig informasjon og stå for konsekvensene, gode som dårlige.', dim: 'beslutninger' },
+    { id: 'q8', text: 'Jeg er interessert i forretningssiden — fakturerbar tid, bemanning, kunderelasjoner, vekst — ikke bare faget.', dim: 'forretning' }
+  ];
+
+  const scaleLabels = ['Helt uenig', 'Uenig', 'Nøytral', 'Enig', 'Helt enig'];
+  const dimLabels = {
+    utvikle: 'Utvikle andre',
+    ego: 'Ego i sjakk',
+    vanskelige: 'Vanskelige samtaler',
+    taalmodighet: 'Tålmodighet',
+    virkelighet: 'Rollens virkelighet',
+    empati: 'Empati og oppmerksomhet',
+    beslutninger: 'Beslutningsevne',
+    forretning: 'Forretningsinteresse'
+  };
+
+  const answers = {};
+  const questionsEl = document.getElementById('questions');
+
+  questions.forEach((q, idx) => {
+    const article = document.createElement('article');
+    article.className = 'question';
+    article.innerHTML = `
+      <span class="q-num">Spørsmål ${String(idx + 1).padStart(2, '0')} / 08</span>
+      <h2 class="q-text">${q.text}</h2>
+      <div class="scale" role="radiogroup" aria-label="${q.text}"></div>
+    `;
+    const scale = article.querySelector('.scale');
+    for (let i = 1; i <= 5; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'scale-btn';
+      btn.setAttribute('role', 'radio');
+      btn.setAttribute('aria-checked', 'false');
+      btn.dataset.qid = q.id;
+      btn.dataset.value = String(i);
+      btn.innerHTML = `<span class="scale-btn-num">${i}</span><span class="scale-btn-label">${scaleLabels[i-1]}</span>`;
+      btn.addEventListener('click', () => selectAnswer(q.id, i, scale));
+      scale.appendChild(btn);
+    }
+    questionsEl.appendChild(article);
+  });
+
+  function selectAnswer(qid, value, scaleEl) {
+    answers[qid] = value;
+    scaleEl.querySelectorAll('.scale-btn').forEach(b => {
+      const v = parseInt(b.dataset.value, 10);
+      const isSelected = v === value;
+      b.classList.toggle('selected', isSelected);
+      b.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const n = Object.keys(answers).length;
+    const pct = Math.round((n / questions.length) * 100);
+    document.getElementById('answered-count').textContent = n;
+    document.getElementById('progress-pct').textContent = pct + ' %';
+    document.getElementById('progress-bar').style.right = (100 - pct) + '%';
+    const submit = document.getElementById('submit-btn');
+    submit.disabled = n !== questions.length;
+  }
+
+  function computeResult() {
+    const total = Object.values(answers).reduce((a, b) => a + b, 0);
+    const max = questions.length * 5;
+    const pct = Math.round((total / max) * 100);
+
+    const dims = {};
+    questions.forEach(q => { dims[q.dim] = answers[q.id]; });
+
+    let band, headline, body, color;
+    if (pct >= 80) {
+      band = 'Sterkt egnet';
+      color = 'var(--good)';
+      headline = 'Signalene peker den rette veien.';
+      body = [
+        'Du viser ekte interesse for å utvikle andre, vilje til å håndtere de mindre glamorøse delene av rollen, og komfort med beslutninger og vanskelige samtaler.',
+        'Det er verdt å ta en seriøs samtale med lederen din om en vei inn i personalledelse. Neste steg er å teste teorien — prøv formell mentoring, å lede et lite prosjektteam, eller å observere 1:1-er.'
+      ];
+    } else if (pct >= 64) {
+      band = 'Sannsynligvis god match';
+      color = 'var(--accent)';
+      headline = 'Lovende, men noen områder bør stresstestes.';
+      body = [
+        'Mye av grunnlaget er på plass. Se nøye på spørsmål du ga 2 eller 3 — det er de delene av jobben du vil møte hyppigst.',
+        'En lederrolle er ikke en forfremmelse fra faget ditt; det er en annen jobb. Vurder en prøveperiode som teknisk leder eller team-lead før du forplikter deg fullt.'
+      ];
+    } else if (pct >= 48) {
+      band = 'Blandede signaler';
+      color = 'var(--warn)';
+      headline = 'Verdt å tenke nøye gjennom før du bytter spor.';
+      body = [
+        'Du har noen trekk som passer og andre som ikke gjør det. Faresonen for nye ledere er å ta rollen av feil grunner — lønn, tittel, "neste steg" — og oppdage at hverdagen ikke matcher.',
+        'Se på dine laveste scorer: er det noe du kan vokse inn i, eller noe som rett og slett ikke appellerer? I et konsulentselskap finnes det som regel seniorfaglige spor (prinsipal, arkitekt, ekspert-konsulent) som anerkjenner påvirkning uten å kreve personalansvar.'
+      ];
+    } else {
+      band = 'Antagelig feil vei';
+      color = 'var(--bad)';
+      headline = 'Rollen vil sannsynligvis ikke gjøre deg lykkelig.';
+      body = [
+        'Svarene dine tyder på at det en leder bruker mesteparten av tiden på, ikke er det som gir deg energi. Det er ikke en svakhet — det er nyttig selvinnsikt.',
+        'De beste ingeniørene, arkitektene og seniorkonsulentene har ofte akkurat denne profilen. Se på seniorfaglig spor hos arbeidsgiveren din, eller vurder ledelse uten personalansvar (teknisk leder, fagleder) der du former arbeidet uten å ha personalansvar.'
+      ];
+    }
+
+    const dimEntries = Object.entries(dims).map(([k, v]) => ({ key: k, label: dimLabels[k], score: v }));
+    const strengths = dimEntries.filter(d => d.score >= 4).sort((a, b) => b.score - a.score);
+    const watchouts = dimEntries.filter(d => d.score <= 2).sort((a, b) => a.score - b.score);
+
+    return { total, max, pct, band, headline, body, color, strengths, watchouts, dimEntries };
+  }
+
+  function renderResult() {
+    const r = computeResult();
+    const resultEl = document.getElementById('result');
+
+    const dots = (n) => Array.from({length: 5}, (_, i) =>
+      `<span class="${i < n ? 'filled' : ''}"></span>`).join('');
+
+    const breakdownRows = r.dimEntries.map(d => `
+      <div class="breakdown-row">
+        <span class="breakdown-label">${d.label}</span>
+        <span class="breakdown-score">
+          <span class="breakdown-dots">${dots(d.score)}</span>
+          <span class="breakdown-num">${d.score}</span>
+        </span>
+      </div>
+    `).join('');
+
+    let tagsHtml = '';
+    if (r.strengths.length || r.watchouts.length) {
+      tagsHtml = '<div class="tags">';
+      if (r.strengths.length) {
+        tagsHtml += `<div class="tag-group">
+          <div class="tag-label">Tydelige styrker</div>
+          <div class="tag-list">${r.strengths.map(s => s.label.toLowerCase()).join(' · ')}</div>
+        </div>`;
+      }
+      if (r.watchouts.length) {
+        tagsHtml += `<div class="tag-group">
+          <div class="tag-label">Områder å se nærmere på</div>
+          <div class="tag-list">${r.watchouts.map(s => s.label.toLowerCase()).join(' · ')}</div>
+        </div>`;
+      }
+      tagsHtml += '</div>';
+    }
+
+    resultEl.innerHTML = `
+      <div class="result result-card" style="--band-color: ${r.color};">
+        <div class="result-eyebrow">Resultatet ditt</div>
+        <div class="result-band">${r.band}</div>
+        <div class="result-score">Poengsum <strong>${r.total} av ${r.max}</strong> · ${r.pct} %</div>
+        <p class="result-headline">${r.headline}</p>
+        <div class="result-body">
+          ${r.body.map(p => `<p>${p}</p>`).join('')}
+        </div>
+        <div class="breakdown">
+          <div class="breakdown-title">Fordeling per område</div>
+          ${breakdownRows}
+        </div>
+        ${tagsHtml}
+      </div>
+    `;
+
+    setTimeout(() => {
+      resultEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  document.getElementById('submit-btn').addEventListener('click', renderResult);
+  document.getElementById('reset-btn').addEventListener('click', () => {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll('.scale-btn').forEach(b => {
+      b.classList.remove('selected');
+      b.setAttribute('aria-checked', 'false');
+    });
+    document.getElementById('result').innerHTML = '';
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
